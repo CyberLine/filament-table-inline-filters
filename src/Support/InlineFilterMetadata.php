@@ -9,12 +9,8 @@ use WeakMap;
 
 final class InlineFilterMetadata
 {
-    /** @var WeakMap<Column, array<string, mixed>> */
     private static ?WeakMap $map = null;
 
-    /**
-     * @return array<string, mixed>
-     */
     public static function get(Column $column): array
     {
         self::boot();
@@ -22,9 +18,6 @@ final class InlineFilterMetadata
         return self::$map[$column] ?? [];
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
     public static function merge(Column $column, array $data): void
     {
         self::boot();

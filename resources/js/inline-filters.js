@@ -23,11 +23,20 @@
     }
 
     function mountCell(td) {
-        if (td.getAttribute('data-ilf-mounted') === '1') {
-            return;
-        }
         if (!td.getAttribute('data-ilf-col')) {
             return;
+        }
+
+        const hasOurRow = td.querySelector(':scope > .fi-ilf-cell-row');
+        if (td.getAttribute('data-ilf-mounted') === '1' && hasOurRow) {
+            return;
+        }
+
+        td.removeAttribute('data-ilf-mounted');
+
+        const orphanRow = td.querySelector(':scope > .fi-ilf-cell-row');
+        if (orphanRow) {
+            orphanRow.remove();
         }
 
         td.setAttribute('data-ilf-mounted', '1');
@@ -90,7 +99,8 @@
     }
 
     function scan(root) {
-        (root || document).querySelectorAll('td[data-ilf-col]:not([data-ilf-mounted="1"])').forEach(mountCell);
+        const scope = root && root.nodeType === 1 ? root : document;
+        scope.querySelectorAll('td[data-ilf-col]').forEach(mountCell);
     }
 
     const observer = new MutationObserver((mutations) => {
@@ -112,5 +122,13 @@
 
     document.addEventListener('livewire:navigated', () => {
         setTimeout(() => scan(document), 0);
+    });
+
+    document.addEventListener('livewire:init', () => {
+        Livewire.hook('morphed', ({ el }) => {
+            if (el && el.nodeType === 1) {
+                requestAnimationFrame(() => scan(el));
+            }
+        });
     });
 })();

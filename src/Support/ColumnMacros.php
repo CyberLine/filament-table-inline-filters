@@ -6,23 +6,24 @@ namespace Cyberline\FilamentTableInlineFilters\Support;
 
 use BackedEnum;
 use Closure;
-use Filament\Tables\Columns\Column;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use JsonException;
+use LogicException;
 
 final class ColumnMacros
 {
     public static function boot(): void
     {
-        Column::macro('inlineFilter', function (?Closure $visibility = null) {
-            /** @var Column $this */
+        TextColumn::macro('inlineFilter', function (?Closure $visibility = null) {
+            ColumnMacros::assertPlainTextColumn($this);
+
             InlineFilterMetadata::merge($this, [
                 'enabled' => true,
                 'visibility' => $visibility,
             ]);
 
             return $this->extraCellAttributes(function (?Model $record = null) {
-                /** @var Column $this */
                 $meta = InlineFilterMetadata::get($this);
 
                 if (! ($meta['enabled'] ?? false) || ! $record instanceof Model) {
@@ -58,25 +59,39 @@ final class ColumnMacros
             }, merge: true);
         });
 
-        Column::macro('inlineFilterAlignRight', function () {
-            /** @var Column $this */
+        TextColumn::macro('inlineFilterAlignRight', function () {
+            ColumnMacros::assertPlainTextColumn($this);
+
             InlineFilterMetadata::merge($this, ['align' => 'right']);
 
             return $this;
         });
 
-        Column::macro('inlineFilterIconPlus', function (string|BackedEnum|Closure $icon) {
-            /** @var Column $this */
+        TextColumn::macro('inlineFilterIconPlus', function (string|BackedEnum|Closure $icon) {
+            ColumnMacros::assertPlainTextColumn($this);
+
             InlineFilterMetadata::merge($this, ['iconPlus' => $icon]);
 
             return $this;
         });
 
-        Column::macro('inlineFilterIconMinus', function (string|BackedEnum|Closure $icon) {
-            /** @var Column $this */
+        TextColumn::macro('inlineFilterIconMinus', function (string|BackedEnum|Closure $icon) {
+            ColumnMacros::assertPlainTextColumn($this);
+
             InlineFilterMetadata::merge($this, ['iconMinus' => $icon]);
 
             return $this;
         });
+    }
+
+    public static function assertPlainTextColumn(object $column): void
+    {
+        if (! ($column instanceof TextColumn) || $column::class !== TextColumn::class) {
+            throw new LogicException(sprintf(
+                'Inline filters are only supported on %s (got %s).',
+                TextColumn::class,
+                $column::class,
+            ));
+        }
     }
 }

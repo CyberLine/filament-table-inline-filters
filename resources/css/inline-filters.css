@@ -1,9 +1,3 @@
-/**
- * Explizites Flex-Layout: Filament-Prefix-Klassen wie fi-inline-flex sind im Theme
- * nicht garantiert; Badge nutzt zudem fi-badge-label-ctn { display: grid }.
- */
-
-/* Filter-Chip: Icon + Text in einer Zeile */
 .fi-badge .fi-ilf-chip-label {
     display: inline-flex !important;
     flex-direction: row !important;
@@ -32,7 +26,6 @@
     display: block;
 }
 
-/* Tabellenzelle: Zeile unterhalb table-cell */
 td.fi-ilf-cell {
     vertical-align: middle;
 }

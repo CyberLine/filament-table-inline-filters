@@ -9,7 +9,7 @@ return [
     'icons' => [
         'plus' => Heroicon::OutlinedPlusCircle,
         'minus' => Heroicon::OutlinedMinusCircle,
-        'size' => IconSize::Small,
+        'size' => IconSize::Medium,
     ],
 
     'chip' => [

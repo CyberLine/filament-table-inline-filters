@@ -11,9 +11,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class InlineFilterQueryApplier
 {
-    /**
-     * @return Closure(Builder, bool, HasTable): void
-     */
     public static function tableQueryScope(): Closure
     {
         return function (Builder $query, bool $isResolvingRecord, HasTable $livewire): void {

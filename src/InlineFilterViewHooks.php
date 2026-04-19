@@ -10,9 +10,6 @@ use Livewire\Livewire;
 
 final class InlineFilterViewHooks
 {
-    /**
-     * @param array<string, mixed> $data
-     */
     public static function renderMergedFilterIndicators(array $data): string
     {
         $livewire = Livewire::current();
@@ -21,13 +18,11 @@ final class InlineFilterViewHooks
             return '';
         }
 
-        /** @var list<array<string, mixed>> $inline */
         $inline = $livewire->inlineFilters ?? [];
         if ($inline === []) {
             return '';
         }
 
-        /** @var array<int, \Filament\Tables\Filters\Indicator> $native */
         $native = $data['filterIndicators'] ?? [];
 
         return view('filament-table-inline-filters::merged-filter-indicators', [
@@ -44,7 +39,6 @@ final class InlineFilterViewHooks
             return '';
         }
 
-        /** @var list<array<string, mixed>> $inline */
         $inline = $livewire->inlineFilters ?? [];
         if ($inline === []) {
             return '';

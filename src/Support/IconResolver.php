@@ -17,9 +17,6 @@ use Illuminate\Support\HtmlString;
 
 final class IconResolver
 {
-    /**
-     * @return array{0: string, 1: string}
-     */
     public static function svgPairForColumn(Column $column): array
     {
         $meta = InlineFilterMetadata::get($column);

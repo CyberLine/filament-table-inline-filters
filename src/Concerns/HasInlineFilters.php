@@ -8,11 +8,13 @@ use Livewire\Attributes\Url;
 
 trait HasInlineFilters
 {
-    /**
-     * @var list<array{column: string, operator: string, value: mixed, label: ?string}>
-     */
     #[Url(as: 'ilf', history: true)]
     public array $inlineFilters = [];
+
+    public function updatedInlineFilters(): void
+    {
+        $this->refreshDatasetAfterInlineFiltersChanged();
+    }
 
     public function addInlineFilter(string $column, string $operator, mixed $value, ?string $label = null): void
     {
@@ -20,13 +22,16 @@ trait HasInlineFilters
             return;
         }
 
-        foreach ($this->inlineFilters as $existing) {
-            if (($existing['column'] ?? '') === $column
-                && ($existing['operator'] ?? '') === $operator
-                && ($existing['value'] ?? null) == $value) {
-                return;
-            }
-        }
+        $this->inlineFilters = array_values(array_filter(
+            $this->inlineFilters,
+            function (array $f) use ($column, $value): bool {
+                if (($f['column'] ?? '') !== $column) {
+                    return true;
+                }
+
+                return ($f['value'] ?? null) != $value;
+            },
+        ));
 
         $this->inlineFilters[] = [
             'column' => $column,
@@ -35,7 +40,7 @@ trait HasInlineFilters
             'label' => $label,
         ];
 
-        $this->resetTable();
+        $this->refreshDatasetAfterInlineFiltersChanged();
     }
 
     public function removeInlineFilter(int $index): void
@@ -47,20 +52,26 @@ trait HasInlineFilters
         unset($this->inlineFilters[$index]);
         $this->inlineFilters = array_values($this->inlineFilters);
 
-        $this->resetTable();
+        $this->refreshDatasetAfterInlineFiltersChanged();
     }
 
     public function clearInlineFilters(): void
     {
         $this->inlineFilters = [];
-        $this->resetTable();
+        $this->refreshDatasetAfterInlineFiltersChanged();
     }
 
     public function removeTableFiltersWithInline(): void
     {
-        $this->removeTableFilters();
         $this->inlineFilters = [];
-        $this->resetTable();
+        $this->flushCachedTableRecords();
+        $this->removeTableFilters();
+    }
+
+    protected function refreshDatasetAfterInlineFiltersChanged(): void
+    {
+        $this->flushCachedTableRecords();
+        $this->resetPage();
     }
 
     private function isValidInlineColumn(string $column): bool
