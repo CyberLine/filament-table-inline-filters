@@ -134,6 +134,19 @@ TextColumn::make('city')
 
 Icons can also be **closures** evaluated in column context (same as Filament column `evaluate()`).
 
+### Icon button colors (plus / minus)
+
+Defaults come from `config('filament-table-inline-filters.icons.plus_color')` and `minus_color` (`success` and `danger`). Allowed values: `primary`, `success`, `danger`, `warning`, `info`, `gray`.
+
+```php
+TextColumn::make('name')
+    ->inlineFilter()
+    ->inlineFilterPlusColor('primary')
+    ->inlineFilterMinusColor('gray');
+```
+
+Passing no argument (or `null`) uses the config default for that side. `BackedEnum` values are cast to string (same as icon enums).
+
 ## Relationship columns
 
 Use **dot notation** for a single relation path. The package applies `whereHas` / `whereDoesntHave` with null-safe `!=` on the leaf attribute:
@@ -151,6 +164,7 @@ After publishing `config/filament-table-inline-filters.php`:
 | Key | Purpose |
 |-----|---------|
 | `icons.plus` / `icons.minus` | Default Heroicons for chip badges |
+| `icons.plus_color` / `icons.minus_color` | Semantic colors for **table** +/- buttons (`success` / `danger` by default) |
 | `icons.size` | `IconSize` for chips |
 | `chip.color` | Filament badge color |
 | `chip.equals_format` / `chip.not_equals_format` | Placeholders `:label` and `:value` |

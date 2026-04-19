@@ -48,11 +48,22 @@ final class ColumnMacros
                     $json = json_encode((string) $state, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
                 }
 
+                $plusTone = InlineFilterIconColor::normalize(
+                    $meta['plusColor'] ?? null,
+                    (string) config('filament-table-inline-filters.icons.plus_color', 'success'),
+                );
+                $minusTone = InlineFilterIconColor::normalize(
+                    $meta['minusColor'] ?? null,
+                    (string) config('filament-table-inline-filters.icons.minus_color', 'danger'),
+                );
+
                 return [
                     'data-ilf-col' => $this->getName(),
                     'data-ilf-value' => htmlspecialchars($json, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                     'data-ilf-align' => ($meta['align'] ?? 'left'),
                     'data-ilf-label' => htmlspecialchars($label, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                    'data-ilf-plus-tone' => $plusTone,
+                    'data-ilf-minus-tone' => $minusTone,
                     'data-ilf-plus-svg' => base64_encode($pair[0]),
                     'data-ilf-minus-svg' => base64_encode($pair[1]),
                 ];
@@ -79,6 +90,24 @@ final class ColumnMacros
             ColumnMacros::assertPlainTextColumn($this);
 
             InlineFilterMetadata::merge($this, ['iconMinus' => $icon]);
+
+            return $this;
+        });
+
+        TextColumn::macro('inlineFilterPlusColor', function (string|BackedEnum|null $color = null) {
+            ColumnMacros::assertPlainTextColumn($this);
+
+            $value = $color instanceof BackedEnum ? (string) $color->value : $color;
+            InlineFilterMetadata::merge($this, ['plusColor' => $value]);
+
+            return $this;
+        });
+
+        TextColumn::macro('inlineFilterMinusColor', function (string|BackedEnum|null $color = null) {
+            ColumnMacros::assertPlainTextColumn($this);
+
+            $value = $color instanceof BackedEnum ? (string) $color->value : $color;
+            InlineFilterMetadata::merge($this, ['minusColor' => $value]);
 
             return $this;
         });

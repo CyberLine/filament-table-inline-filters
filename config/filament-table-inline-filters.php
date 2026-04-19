@@ -10,6 +10,8 @@ return [
         'plus' => Heroicon::OutlinedPlusCircle,
         'minus' => Heroicon::OutlinedMinusCircle,
         'size' => IconSize::Medium,
+        'plus_color' => 'success',
+        'minus_color' => 'danger',
     ],
 
     'chip' => [

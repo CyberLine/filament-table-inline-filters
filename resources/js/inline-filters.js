@@ -66,11 +66,14 @@
         const actions = document.createElement('span');
         actions.className = 'fi-ilf-actions';
 
-        const mkBtn = (operator, b64) => {
+        const plusTone = td.getAttribute('data-ilf-plus-tone') || 'success';
+        const minusTone = td.getAttribute('data-ilf-minus-tone') || 'danger';
+
+        const mkBtn = (operator, b64, tone) => {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className =
-                'fi-ilf-btn fi-icon-btn fi-size-xs fi-text-gray-500 hover:fi-text-primary-600 dark:fi-text-gray-400 dark:hover:fi-text-primary-400';
+            btn.className = 'fi-ilf-btn fi-icon-btn fi-size-xs';
+            btn.setAttribute('data-ilf-tone', tone);
             btn.innerHTML = decodeSvg(b64);
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -84,8 +87,8 @@
             return btn;
         };
 
-        actions.appendChild(mkBtn('=', td.getAttribute('data-ilf-plus-svg') || ''));
-        actions.appendChild(mkBtn('!=', td.getAttribute('data-ilf-minus-svg') || ''));
+        actions.appendChild(mkBtn('=', td.getAttribute('data-ilf-plus-svg') || '', plusTone));
+        actions.appendChild(mkBtn('!=', td.getAttribute('data-ilf-minus-svg') || '', minusTone));
 
         if (align === 'right') {
             row.appendChild(valueWrap);
