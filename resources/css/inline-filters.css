@@ -1,0 +1,73 @@
+/**
+ * Explizites Flex-Layout: Filament-Prefix-Klassen wie fi-inline-flex sind im Theme
+ * nicht garantiert; Badge nutzt zudem fi-badge-label-ctn { display: grid }.
+ */
+
+/* Filter-Chip: Icon + Text in einer Zeile */
+.fi-badge .fi-ilf-chip-label {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 0.25rem;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+.fi-badge .fi-ilf-chip-label > .fi-icon {
+    display: inline-flex !important;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.fi-badge .fi-ilf-chip-label > span:last-child {
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.fi-ilf-chip-label svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    display: block;
+}
+
+/* Tabellenzelle: Zeile unterhalb table-cell */
+td.fi-ilf-cell {
+    vertical-align: middle;
+}
+
+.fi-ilf-cell-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.fi-ilf-cell-value {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.fi-ilf-actions {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.125rem;
+}
+
+.fi-ilf-actions .fi-ilf-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.fi-ilf-actions .fi-ilf-btn svg {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+}

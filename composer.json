@@ -1,0 +1,34 @@
+{
+    "name": "cyberline/filament-table-inline-filters",
+    "version": "1.0.0",
+    "description": "Inline +/- table filters (Grafana-style) for Filament with URL persistence.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "CyberLine",
+            "homepage": "https://github.com/CyberLine"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^4.0|^5.0",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
+        "livewire/livewire": "^3.0|^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cyberline\\FilamentTableInlineFilters\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Cyberline\\FilamentTableInlineFilters\\FilamentTableInlineFiltersServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
